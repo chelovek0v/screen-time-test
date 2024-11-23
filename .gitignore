@@ -4,7 +4,14 @@
 !*/
 
 !.gitignore
+!*.entitlements
 !Makefile
+
 !ScreenTimeTest.xcodeproj/*
 !ScreenTimeTest/*
+!ScreenTimeTest/**/*.json
+
+!DeviceActivityMonitor/*
+!DeviceActivityMonitor/**/*.json
+!DeviceActivityMonitor/**/*.plist
 

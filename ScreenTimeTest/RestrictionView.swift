@@ -1,4 +1,5 @@
 import Foundation
+import FamilyControls
 import SwiftUI
 
 struct RestrictionView: View
@@ -17,27 +18,30 @@ struct RestrictionView: View
 			VStack {
 				Form {
 					Section {
+							NavigationLink {
+								FamilyActivityPicker(selection: $model.selection)
+							} label:  {
+								HStack {
+									Text("Apps & Website")
+									Spacer()
+									if model.isEmpty {
+										Button(action: {}) {
+											Image(systemName: "info.circle.fill")
+											Text("Select")
+										}
+										.buttonBorderShape(.roundedRectangle)
+										.buttonStyle(.borderedProminent)
+										.controlSize(.small)
+										.tint(.yellow)
+										.foregroundColor(.primary)
+									}
+									else {
+										Text("Blocked \(model.blocked)")
+									}
+								}
+							}
+
 						Toggle("All Day", isOn: $model.schedule.allDay)
-						NavigationLink("Selected Apps & Websites", destination: {
-							Text("Select Apps & Website to Restrict")
-							.font(.title)
-							.familyActivityPicker(
-								isPresented: $familyPickerPresented,
-								selection: $model.selection
-							)
-							.onAppear {
-								familyPickerPresented = true
-							}
-						})
-						Picker("Apps & Websites", selection: $state) {
-							if model.isEmpty {
-								Text("Select")
-							}
-							else {
-								Text("\(model.blocked)")
-							}
-						}
-						.pickerStyle(.navigationLink)
 						DatePicker("Starts", selection: $model.schedule.starts, displayedComponents: .hourAndMinute)
 						.disabled(model.schedule.allDay)
 						DatePicker("Ends", selection: $model.schedule.ends, displayedComponents: .hourAndMinute)

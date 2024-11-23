@@ -64,6 +64,7 @@ struct RestrictionView: View
 
 						Spacer()
 
+						// TODO: add more checks, e.g. for non empty weekdays.
 						Button("Activate") {
 							restrictions.activate()
 						}

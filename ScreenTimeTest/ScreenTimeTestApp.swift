@@ -36,7 +36,3 @@ extension AllSettings.Name
 }
 
 typealias AllSettings = ManagedSettingsStore
-typealias AuthorisationReqeust = AuthorizationCenter
-typealias DeviceActivityExtension = DeviceActivityCenter
-
-

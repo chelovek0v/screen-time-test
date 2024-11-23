@@ -8,36 +8,38 @@ import ManagedSettings
 
 final class Restrictions: ObservableObject
 {
-	@Published
-	var hasChanges = false
+	// MARK: - Initialisation
+	init()
+	{
+		sharedUserDefaults =  UserDefaults(suiteName: "group.6M9LRL268Y.me.vanka")!
+		selection = FamilyActivitySelection.from(data: sharedUserDefaults.data(forKey: "Selection")) ?? FamilyActivitySelection()
+		schedule = Schedule.from(data: sharedUserDefaults.data(forKey: "Schedule")) ?? .default
+	}
+
+
+	// MARK: -
+	let sharedUserDefaults: UserDefaults
 
 	@Published
-	var selection = FamilyActivitySelection() {
+	var selection: FamilyActivitySelection {
 		didSet {
 			hasChanges = true
 			sharedUserDefaults.set(try? Self.encoder.encode(selection), forKey: "Selection")
 		}
 	}
 
-	var isSelectionEmpty: Bool {
-		selection.applicationTokens.isEmpty &&
-		selection.webDomainTokens.isEmpty
-	}
-
-	var numberOfSelectedItems: Int {
-		selection.applicationTokens.count + selection.webDomainTokens.count
-	}
-
-	var isActive: Bool {
-		// TODO: create something more concrete, e.g Weekdays.
-		(1...7)
-			.map({ String(describing: $0) })
-			.compactMap({ center.schedule(for: .init($0)) })
-					.isEmpty == false
-	}
 
 	// MARK: - Schedule
-	struct Schedule {
+	@Published
+	var schedule: Schedule  {
+		didSet {
+			hasChanges = true
+			// TODO: better to use inner encoder.
+			sharedUserDefaults.set(try? Self.encoder.encode(schedule), forKey: "Schedule")
+		}
+	}
+
+	struct Schedule: Codable {
 		// TODO: there're better options, maybe an enum. But it's good enough, no optimisation beforehand.
 		// See EKEvent for example.
 		var allDay: Bool
@@ -60,23 +62,52 @@ final class Restrictions: ObservableObject
 				return ($0, schedule)
 			}
 		}
-	}
 
-	@Published
-	var schedule: Schedule = .init(allDay: false, starts: .now, ends: .init(timeIntervalSinceNow: 60 * 60), weekdays: []) {
-		didSet {
-			hasChanges = true
+		static var `default`: Self = .init(allDay: false, starts: .now, ends: .init(timeIntervalSinceNow: 60 * 60), weekdays: [])
+
+		static let decoder = PropertyListDecoder()
+
+		static func from(data: Data?) -> Self?
+		{
+			if let data {
+				return try? decoder.decode(Schedule.self, from: data)
+			}
+			else {
+				return nil
+			}
 		}
 	}
 
+
 	// MARK: -
-	lazy var sharedUserDefaults = UserDefaults(suiteName: "group.6M9LRL268Y.me.vanka")!
+	var isSelectionEmpty: Bool {
+		selection.applicationTokens.isEmpty &&
+		selection.webDomainTokens.isEmpty
+	}
+
+	var numberOfSelectedItems: Int {
+		selection.applicationTokens.count + selection.webDomainTokens.count + selection.categoryTokens.count
+	}
+
+	var isActive: Bool {
+		// TODO: create something more concrete, e.g Weekdays.
+		(1...7)
+			.map({ String(describing: $0) })
+			.compactMap({ center.schedule(for: .init($0)) })
+					.isEmpty == false
+	}
+
+	@Published
+	var hasChanges = false
+
+
+	// MARK: -
+	let center = DeviceActivityCenter()
 
 	func activate()
 	{
 		defer { hasChanges = false }
 
-		let center = DeviceActivityCenter()
 		center.stopMonitoring()
 
 		for (weekdayCalendarIndex, weekdaySchedule) in schedule.deviceActivitySchedules
@@ -98,7 +129,6 @@ final class Restrictions: ObservableObject
 
 	func deactivate()
 	{
-		let center = DeviceActivityCenter()
 		let settings = AllSettings(named: .default)
 		
 		settings.clearAllSettings()
@@ -107,4 +137,20 @@ final class Restrictions: ObservableObject
 	}
 
     private static let encoder = PropertyListEncoder()
+}
+
+
+extension FamilyActivitySelection
+{
+	static let decoder = PropertyListDecoder()
+
+	static func from(data: Data?) -> Self?
+	{
+		if let data {
+			return try? decoder.decode(FamilyActivitySelection.self, from: data)
+		}
+		else {
+			return nil
+		}
+	}
 }

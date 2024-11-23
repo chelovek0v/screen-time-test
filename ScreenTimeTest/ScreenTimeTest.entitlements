@@ -4,5 +4,9 @@
 <dict>
 	<key>com.apple.developer.family-controls</key>
 	<true/>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.6M9LRL268Y.me.vanka</string>
+	</array>
 </dict>
 </plist>

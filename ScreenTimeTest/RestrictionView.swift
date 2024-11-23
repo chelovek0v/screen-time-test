@@ -86,22 +86,24 @@ struct DaysOfWeekView: View
 	}
 
 	let weekdays =
-	Calendar.current.veryShortStandaloneWeekdaySymbols
+		Calendar.current.veryShortStandaloneWeekdaySymbols
 	var body: some View {
 		VStack(alignment: .leading) {
 		HStack {
 			ForEach(weekdays.indices) { index in
+				let weekdayCalendarIndex = index + 1
+
 				Button(weekdays[index]) {
-					if selected.contains(index) {
-						selected.remove(index)
+					if selected.contains(weekdayCalendarIndex) {
+						selected.remove(weekdayCalendarIndex)
 					}
 					else {
-						selected.insert(index)
+						selected.insert(weekdayCalendarIndex)
 					}
 				}
 				.fixedSize()
 				.buttonStyle(.borderedProminent)
-				.tint(selected.contains(index) ? .purple : .gray)
+				.tint(selected.contains(weekdayCalendarIndex) ? .purple : .gray)
 			}
 		}
 			Text("Days of week active \(daysOfWeekActive)")

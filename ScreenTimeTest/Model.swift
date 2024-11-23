@@ -25,7 +25,7 @@ final class Model: ObservableObject
 
 	var active: Bool {
 		// TODO: create something more concrete, e.g Weekdays.
-		(0...6)
+		(1...7)
 			.map({ String(describing: $0) })
 			.compactMap({ center.schedule(for: .init($0)) })
 					.isEmpty == false
@@ -40,7 +40,7 @@ final class Model: ObservableObject
 			weekdays.map {
 				// TODO: extension would be nice here, just to hush the noise.
 				let startsComponents = Calendar.current.dateComponents([.hour, .minute], from: starts)
-				let endsComponents = Calendar.current.dateComponents([.hour, .minute], from: starts)
+				let endsComponents = Calendar.current.dateComponents([.hour, .minute], from: ends)
 
 				let schedule = DeviceActivitySchedule(
 					intervalStart: DateComponents(hour: startsComponents.hour!, minute: startsComponents.minute!, weekday: $0),
@@ -62,15 +62,14 @@ final class Model: ObservableObject
 	@Published
 	var saved = true
 
+	lazy var sharedUserDefaults = UserDefaults(suiteName: "group.me.vanka")!
+
 	lazy var center = DeviceActivityCenter()
 
+    private static let encoder = PropertyListEncoder()
 	func startMonitoring()
 	{
-		let settings = AllSettings(named: .default)
-
-		
-		settings.shield.applications = selection.applicationTokens
-		settings.shield.webDomains = selection.webDomainTokens
+        sharedUserDefaults.set(try? Self.encoder.encode(selection), forKey: "Selection")
 
 		center.stopMonitoring()
 
@@ -96,8 +95,9 @@ final class Model: ObservableObject
 	func stopMonitoring()
 	{
 		let settings = AllSettings(named: .default)
-		settings.shield.applications = ShieldSettings.applications.defaultValue
-		settings.shield.webDomains = ShieldSettings.webDomains.defaultValue
+		
+		settings.clearAllSettings()
 		center.stopMonitoring()
+		saved = true
 	}
 }

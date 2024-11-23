@@ -29,9 +29,6 @@ struct ScreenTimeTestApp: App {
 import DeviceActivity
 import ManagedSettings
 
-extension DeviceActivityName {
-    static let `default` = Self("DefaultActivity")
-}
 
 extension AllSettings.Name
 {

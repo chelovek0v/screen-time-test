@@ -13,18 +13,13 @@ struct RestrictionView: View
 	}
 	@State private var state: RestrictionState = .notSelected
 
-	@State var starts: Date = .now
-	@State var ends: Date = .init(timeIntervalSinceNow: 60 * 60)
-	@State var selected: Set<String> = []
-
 	var body: some View {
 		NavigationView {
 			VStack {
 				Form {
 					Section {
-						Button("Apps & Websites") {}
 						Toggle("All Day", isOn: $allDay)
-						NavigationLink("Link", destination: {
+						NavigationLink("Selected Apps & Websites", destination: {
 							Text("Select Apps & Website to Restrict")
 							.font(.title)
 							.familyActivityPicker(
@@ -36,17 +31,37 @@ struct RestrictionView: View
 							}
 						})
 						Picker("Apps & Websites", selection: $state) {
-							ForEach(RestrictionState.allCases, id: \.self) {
-								Text(String(describing: $0))
+							if model.isEmpty {
+								Text("Select")
+							}
+							else {
+								Text("\(model.blocked)")
 							}
 						}
 						.pickerStyle(.navigationLink)
-						DatePicker("Starts", selection: $starts, displayedComponents: .hourAndMinute)
-						DatePicker("Ends", selection: $ends, displayedComponents: .hourAndMinute)
+						DatePicker("Starts", selection: $model.schedule.starts, displayedComponents: .hourAndMinute)
+						DatePicker("Ends", selection: $model.schedule.ends, displayedComponents: .hourAndMinute)
 					}
 					footer: {
-						DaysOfWeekView(selected: $selected)
+						DaysOfWeekView(selected: $model.schedule.weekdays)
 							.padding()
+					}
+				}
+				.toolbar {
+					ToolbarItemGroup(placement: .bottomBar) {
+						Spacer()
+						Button("Deactivate") {
+							print("Pressed")
+						}
+						.disabled(!model.active)
+						Spacer()
+						Button("Activate") {
+							model.startMonitoring()
+						}
+						// TODO: add mode.active check
+						.disabled(model.isEmpty)
+						.buttonStyle(.borderedProminent)
+						.tint(model.saved ? .blue : .yellow)
 					}
 				}
 			}
@@ -64,27 +79,29 @@ struct RestrictionViewPreviews: PreviewProvider
 
 struct DaysOfWeekView: View
 {
-	@Binding var selected: Set<String>
+	@Binding var selected: Set<Int>
 
 	var daysOfWeekActive: String {
 		"\(selected.count) of 7"
 	}
 
+	let weekdays =
+	Calendar.current.veryShortStandaloneWeekdaySymbols
 	var body: some View {
 		VStack(alignment: .leading) {
 		HStack {
-			ForEach(Calendar.current.shortWeekdaySymbols, id: \.self) { weekday in
-				Button(weekday.prefix(1)) {
-					if selected.contains(weekday) {
-						selected.remove(weekday)
+			ForEach(weekdays.indices) { index in
+				Button(weekdays[index]) {
+					if selected.contains(index) {
+						selected.remove(index)
 					}
 					else {
-						selected.insert(weekday)
+						selected.insert(index)
 					}
 				}
 				.fixedSize()
 				.buttonStyle(.borderedProminent)
-				.tint(selected.contains(weekday) ? .purple : .gray)
+				.tint(selected.contains(index) ? .purple : .gray)
 			}
 		}
 			Text("Days of week active \(daysOfWeekActive)")

@@ -3,39 +3,101 @@ import Foundation
 
 import FamilyControls
 import DeviceActivity
+import ManagedSettings
 
 
 final class Model: ObservableObject
 {
 	@Published
-	var selection = FamilyActivitySelection()
+	var selection = FamilyActivitySelection() {
+		didSet {
+			saved = false
+		}
+	}
+
+	var isEmpty: Bool {
+		selection.applicationTokens.isEmpty &&
+		selection.webDomainTokens.isEmpty
+	}
+	var blocked: Int {
+		selection.applicationTokens.count + selection.webDomainTokens.count
+	}
+
+	var active: Bool {
+		// TODO: create something more concrete, e.g Weekdays.
+		(0...6)
+			.map({ String(describing: $0) })
+			.compactMap({ center.schedule(for: .init($0)) })
+					.isEmpty == false
+	}
+
+	struct Schedule {
+		var starts: Date
+		var ends: Date
+		var weekdays: Set<Int>
+
+		var deviceActivitySchedules: [(weekday: Int, schedule: DeviceActivitySchedule)] {
+			weekdays.map {
+				// TODO: extension would be nice here, just to hush the noise.
+				let startsComponents = Calendar.current.dateComponents([.hour, .minute], from: starts)
+				let endsComponents = Calendar.current.dateComponents([.hour, .minute], from: starts)
+
+				let schedule = DeviceActivitySchedule(
+					intervalStart: DateComponents(hour: startsComponents.hour!, minute: startsComponents.minute!, weekday: $0),
+					intervalEnd: DateComponents(hour: endsComponents.hour!, minute: endsComponents.minute!, weekday: $0),
+					repeats: false)
+
+				return ($0, schedule)
+			}
+		}
+	}
+
+	@Published
+	var schedule: Schedule = .init(starts: .now, ends: .init(timeIntervalSinceNow: 60 * 60), weekdays: []) {
+		didSet {
+			saved = false
+		}
+	}
+
+	@Published
+	var saved = true
 
 	lazy var center = DeviceActivityCenter()
 
 	func startMonitoring()
 	{
 		let settings = AllSettings(named: .default)
+
+		
 		settings.shield.applications = selection.applicationTokens
+		settings.shield.webDomains = selection.webDomainTokens
 
-		let schedule = DeviceActivitySchedule(
-			intervalStart: DateComponents(hour: 10, minute: 0),
-			intervalEnd: DateComponents(hour: 20, minute: 0),
-			repeats: false)
+		center.stopMonitoring()
 
-		do {
-			logger.info("Starting monitor.")
+		for (weekday, weekdaySchedule) in schedule.deviceActivitySchedules
+		{
+			logger.debug("Weekday: \(weekday), starts: \(weekdaySchedule.intervalStart.hour!, privacy: .public)-\(weekdaySchedule.intervalStart.minute!, privacy: .public) ends: \(weekdaySchedule.intervalEnd.hour!, privacy: .public)-\(weekdaySchedule.intervalEnd.minute!, privacy: .public)")
 
-			try center.startMonitoring(.default, during: schedule)
+			do {
+				logger.info("Starting monitor for \(weekday).")
 
-			logger.info("Monitoring installed successfuly.")
+				try center.startMonitoring(DeviceActivityName(String(describing: weekday)), during: weekdaySchedule)
+
+				logger.info("Monitoring installed successfuly for \(weekday).")
+			}
+			catch let error {
+				logger.error("Monitoring failed for \(weekday), error: \(error.localizedDescription, privacy: .public)")
+			}
 		}
-		catch let error {
-			logger.error("Monitoring failed: \(error.localizedDescription, privacy: .public)")
-		}
+
+		saved = true
 	}
 
 	func stopMonitoring()
 	{
+		let settings = AllSettings(named: .default)
+		settings.shield.applications = ShieldSettings.applications.defaultValue
+		settings.shield.webDomains = ShieldSettings.webDomains.defaultValue
 		center.stopMonitoring()
 	}
 }

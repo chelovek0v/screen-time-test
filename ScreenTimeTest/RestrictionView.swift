@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-
 struct RestrictionView: View
 {
 	@State var allDay: Bool

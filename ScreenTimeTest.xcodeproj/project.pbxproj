@@ -8,19 +8,52 @@
 
 /* Begin PBXBuildFile section */
 		284A8B272CF1FB830022BF7C /* ScreenTimeTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284A8B262CF1FB830022BF7C /* ScreenTimeTestApp.swift */; };
-		284A8B292CF1FB830022BF7C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284A8B282CF1FB830022BF7C /* ContentView.swift */; };
 		284A8B2B2CF1FB850022BF7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 284A8B2A2CF1FB850022BF7C /* Assets.xcassets */; };
 		284A8B2E2CF1FB850022BF7C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 284A8B2D2CF1FB850022BF7C /* Preview Assets.xcassets */; };
 		284A8B352CF1FBA90022BF7C /* RestrictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284A8B342CF1FBA90022BF7C /* RestrictionView.swift */; };
+		284A8B372CF20ECF0022BF7C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284A8B362CF20ECF0022BF7C /* Model.swift */; };
+		284A8B3F2CF210520022BF7C /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284A8B3E2CF210520022BF7C /* DeviceActivity.framework */; };
+		284A8B422CF210530022BF7C /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284A8B412CF210530022BF7C /* DeviceActivityMonitorExtension.swift */; };
+		284A8B472CF210530022BF7C /* DeviceActivityMonitor.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 284A8B3C2CF210520022BF7C /* DeviceActivityMonitor.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		284A8B452CF210530022BF7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 284A8B1B2CF1FB830022BF7C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 284A8B3B2CF210520022BF7C;
+			remoteInfo = DeviceActivityMonitor;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		284A8B4B2CF210530022BF7C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				284A8B472CF210530022BF7C /* DeviceActivityMonitor.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		284A8B232CF1FB830022BF7C /* ScreenTimeTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScreenTimeTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		284A8B262CF1FB830022BF7C /* ScreenTimeTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTimeTestApp.swift; sourceTree = "<group>"; };
-		284A8B282CF1FB830022BF7C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		284A8B2A2CF1FB850022BF7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		284A8B2D2CF1FB850022BF7C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		284A8B342CF1FBA90022BF7C /* RestrictionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionView.swift; sourceTree = "<group>"; };
+		284A8B362CF20ECF0022BF7C /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		284A8B3C2CF210520022BF7C /* DeviceActivityMonitor.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DeviceActivityMonitor.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		284A8B3E2CF210520022BF7C /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
+		284A8B412CF210530022BF7C /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
+		284A8B432CF210530022BF7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		284A8B442CF210530022BF7C /* DeviceActivityMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DeviceActivityMonitor.entitlements; sourceTree = "<group>"; };
+		284A8B4C2CF210730022BF7C /* ScreenTimeTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScreenTimeTest.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +64,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		284A8B392CF210520022BF7C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				284A8B3F2CF210520022BF7C /* DeviceActivity.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -38,6 +79,8 @@
 			isa = PBXGroup;
 			children = (
 				284A8B252CF1FB830022BF7C /* ScreenTimeTest */,
+				284A8B402CF210530022BF7C /* DeviceActivityMonitor */,
+				284A8B3D2CF210520022BF7C /* Frameworks */,
 				284A8B242CF1FB830022BF7C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				284A8B232CF1FB830022BF7C /* ScreenTimeTest.app */,
+				284A8B3C2CF210520022BF7C /* DeviceActivityMonitor.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,9 +97,10 @@
 		284A8B252CF1FB830022BF7C /* ScreenTimeTest */ = {
 			isa = PBXGroup;
 			children = (
+				284A8B4C2CF210730022BF7C /* ScreenTimeTest.entitlements */,
 				284A8B262CF1FB830022BF7C /* ScreenTimeTestApp.swift */,
-				284A8B282CF1FB830022BF7C /* ContentView.swift */,
 				284A8B342CF1FBA90022BF7C /* RestrictionView.swift */,
+				284A8B362CF20ECF0022BF7C /* Model.swift */,
 				284A8B2A2CF1FB850022BF7C /* Assets.xcassets */,
 				284A8B2C2CF1FB850022BF7C /* Preview Content */,
 			);
@@ -70,6 +115,24 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		284A8B3D2CF210520022BF7C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				284A8B3E2CF210520022BF7C /* DeviceActivity.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		284A8B402CF210530022BF7C /* DeviceActivityMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				284A8B412CF210530022BF7C /* DeviceActivityMonitorExtension.swift */,
+				284A8B432CF210530022BF7C /* Info.plist */,
+				284A8B442CF210530022BF7C /* DeviceActivityMonitor.entitlements */,
+			);
+			path = DeviceActivityMonitor;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -80,15 +143,34 @@
 				284A8B1F2CF1FB830022BF7C /* Sources */,
 				284A8B202CF1FB830022BF7C /* Frameworks */,
 				284A8B212CF1FB830022BF7C /* Resources */,
+				284A8B4B2CF210530022BF7C /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				284A8B462CF210530022BF7C /* PBXTargetDependency */,
 			);
 			name = ScreenTimeTest;
 			productName = ScreenTimeTest;
 			productReference = 284A8B232CF1FB830022BF7C /* ScreenTimeTest.app */;
 			productType = "com.apple.product-type.application";
+		};
+		284A8B3B2CF210520022BF7C /* DeviceActivityMonitor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 284A8B482CF210530022BF7C /* Build configuration list for PBXNativeTarget "DeviceActivityMonitor" */;
+			buildPhases = (
+				284A8B382CF210520022BF7C /* Sources */,
+				284A8B392CF210520022BF7C /* Frameworks */,
+				284A8B3A2CF210520022BF7C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DeviceActivityMonitor;
+			productName = DeviceActivityMonitor;
+			productReference = 284A8B3C2CF210520022BF7C /* DeviceActivityMonitor.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -101,6 +183,9 @@
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					284A8B222CF1FB830022BF7C = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					284A8B3B2CF210520022BF7C = {
 						CreatedOnToolsVersion = 14.2;
 					};
 				};
@@ -119,6 +204,7 @@
 			projectRoot = "";
 			targets = (
 				284A8B222CF1FB830022BF7C /* ScreenTimeTest */,
+				284A8B3B2CF210520022BF7C /* DeviceActivityMonitor */,
 			);
 		};
 /* End PBXProject section */
@@ -133,6 +219,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		284A8B3A2CF210520022BF7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -140,13 +233,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				284A8B292CF1FB830022BF7C /* ContentView.swift in Sources */,
 				284A8B352CF1FBA90022BF7C /* RestrictionView.swift in Sources */,
 				284A8B272CF1FB830022BF7C /* ScreenTimeTestApp.swift in Sources */,
+				284A8B372CF20ECF0022BF7C /* Model.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		284A8B382CF210520022BF7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				284A8B422CF210530022BF7C /* DeviceActivityMonitorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		284A8B462CF210530022BF7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 284A8B3B2CF210520022BF7C /* DeviceActivityMonitor */;
+			targetProxy = 284A8B452CF210530022BF7C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		284A8B2F2CF1FB850022BF7C /* Debug */ = {
@@ -182,6 +291,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -242,6 +352,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -266,10 +377,11 @@
 		284A8B322CF1FB850022BF7C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ScreenTimeTest/ScreenTimeTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ScreenTimeTest/Preview Content\"";
 				DEVELOPMENT_TEAM = 6M9LRL268Y;
 				ENABLE_PREVIEWS = YES;
@@ -295,10 +407,11 @@
 		284A8B332CF1FB850022BF7C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ScreenTimeTest/ScreenTimeTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ScreenTimeTest/Preview Content\"";
 				DEVELOPMENT_TEAM = 6M9LRL268Y;
 				ENABLE_PREVIEWS = YES;
@@ -315,6 +428,56 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.vanka.ScreenTimeTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		284A8B492CF210530022BF7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitor/DeviceActivityMonitor.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6M9LRL268Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeviceActivityMonitor/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitor;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.vanka.ScreenTimeTest.DeviceActivityMonitor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		284A8B4A2CF210530022BF7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitor/DeviceActivityMonitor.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6M9LRL268Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeviceActivityMonitor/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitor;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.vanka.ScreenTimeTest.DeviceActivityMonitor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -338,6 +501,15 @@
 			buildConfigurations = (
 				284A8B322CF1FB850022BF7C /* Debug */,
 				284A8B332CF1FB850022BF7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		284A8B482CF210530022BF7C /* Build configuration list for PBXNativeTarget "DeviceActivityMonitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				284A8B492CF210530022BF7C /* Debug */,
+				284A8B4A2CF210530022BF7C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

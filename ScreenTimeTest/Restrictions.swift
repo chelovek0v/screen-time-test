@@ -82,7 +82,8 @@ final class Restrictions: ObservableObject
 	// MARK: -
 	var isSelectionEmpty: Bool {
 		selection.applicationTokens.isEmpty &&
-		selection.webDomainTokens.isEmpty
+		selection.webDomainTokens.isEmpty &&
+		selection.categoryTokens.isEmpty
 	}
 
 	var numberOfSelectedItems: Int {

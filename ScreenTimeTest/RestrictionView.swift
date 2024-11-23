@@ -2,16 +2,16 @@ import Foundation
 import FamilyControls
 import SwiftUI
 
+struct RestrictionViewPreviews: PreviewProvider
+{
+	static var previews: some View {
+		RestrictionView()
+	}
+}
+
 struct RestrictionView: View
 {
-	@StateObject var model = Restrictions()
-	@State private var familyPickerPresented = false
-
-	enum RestrictionState: CaseIterable {
-		case notSelected
-		case active
-	}
-	@State private var state: RestrictionState = .notSelected
+	@StateObject var restrictions = Restrictions()
 
 	var body: some View {
 		NavigationView {
@@ -19,12 +19,12 @@ struct RestrictionView: View
 				Form {
 					Section {
 							NavigationLink {
-								FamilyActivityPicker(selection: $model.selection)
+								FamilyActivityPicker(selection: $restrictions.selection)
 							} label:  {
 								HStack {
 									Text("Apps & Website")
 									Spacer()
-									if model.isSelectionEmpty {
+									if restrictions.isSelectionEmpty {
 										Button(action: {}) {
 											Image(systemName: "info.circle.fill")
 											Text("Select")
@@ -37,19 +37,19 @@ struct RestrictionView: View
 										.allowsHitTesting(false)
 									}
 									else {
-										Text("Blocked \(model.numberOfSelectedItems)")
+										Text("Blocked \(restrictions.numberOfSelectedItems)")
 									}
 								}
 							}
 
-						Toggle("All Day", isOn: $model.schedule.allDay)
-						DatePicker("Starts", selection: $model.schedule.starts, displayedComponents: .hourAndMinute)
-						.disabled(model.schedule.allDay)
-						DatePicker("Ends", selection: $model.schedule.ends, displayedComponents: .hourAndMinute)
-						.disabled(model.schedule.allDay)
+						Toggle("All Day", isOn: $restrictions.schedule.allDay)
+						DatePicker("Starts", selection: $restrictions.schedule.starts, displayedComponents: .hourAndMinute)
+						.disabled(restrictions.schedule.allDay)
+						DatePicker("Ends", selection: $restrictions.schedule.ends, displayedComponents: .hourAndMinute)
+						.disabled(restrictions.schedule.allDay)
 					}
 					footer: {
-						DaysOfWeekView(selected: $model.schedule.weekdays)
+						DaysOfWeekView(selected: $restrictions.schedule.weekdays)
 							.padding()
 					}
 				}
@@ -58,19 +58,19 @@ struct RestrictionView: View
 						Spacer()
 
 						Button("Deactivate") {
-							model.deactivate()
+							restrictions.deactivate()
 						}
-						.disabled(!model.isActive)
+						.disabled(!restrictions.isActive)
 
 						Spacer()
 
 						Button("Activate") {
-							model.activate()
+							restrictions.activate()
 						}
 						// TODO: add mode.active check
-						.disabled(model.isSelectionEmpty)
+						.disabled(restrictions.isSelectionEmpty)
 						.buttonStyle(.borderedProminent)
-						.tint(model.hasChanges ? .yellow : .blue)
+						.tint(restrictions.hasChanges ? .yellow : .blue)
 					}
 				}
 			}
@@ -79,43 +79,39 @@ struct RestrictionView: View
 	}
 }
 
-struct RestrictionViewPreviews: PreviewProvider
-{
-	static var previews: some View {
-		RestrictionView()
-	}
-}
 
 struct DaysOfWeekView: View
 {
 	@Binding var selected: Set<Int>
 
+	let weekdays =
+		Calendar.current.veryShortStandaloneWeekdaySymbols
+
+	var body: some View {
+		VStack(alignment: .leading) {
+			HStack {
+				ForEach(weekdays.indices) { index in
+					let weekdayCalendarIndex = index + 1
+
+					Button(weekdays[index]) {
+						if selected.contains(weekdayCalendarIndex) {
+							selected.remove(weekdayCalendarIndex)
+						}
+						else {
+							selected.insert(weekdayCalendarIndex)
+						}
+					}
+					.fixedSize()
+					.buttonStyle(.borderedProminent)
+					.tint(selected.contains(weekdayCalendarIndex) ? .purple : .gray)
+				}
+			}
+			Text("Days of week active \(daysOfWeekActive)")
+		}
+	}
+
 	var daysOfWeekActive: String {
 		"\(selected.count) of 7"
 	}
 
-	let weekdays =
-		Calendar.current.veryShortStandaloneWeekdaySymbols
-	var body: some View {
-		VStack(alignment: .leading) {
-		HStack {
-			ForEach(weekdays.indices) { index in
-				let weekdayCalendarIndex = index + 1
-
-				Button(weekdays[index]) {
-					if selected.contains(weekdayCalendarIndex) {
-						selected.remove(weekdayCalendarIndex)
-					}
-					else {
-						selected.insert(weekdayCalendarIndex)
-					}
-				}
-				.fixedSize()
-				.buttonStyle(.borderedProminent)
-				.tint(selected.contains(weekdayCalendarIndex) ? .purple : .gray)
-			}
-		}
-			Text("Days of week active \(daysOfWeekActive)")
-			}
-	}
 }

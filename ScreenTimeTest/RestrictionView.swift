@@ -3,6 +3,9 @@ import SwiftUI
 
 struct RestrictionView: View
 {
+	@StateObject var model = Model()
+	@State private var familyPickerPresented = false
+
 	@State var allDay: Bool
 	enum RestrictionState: CaseIterable {
 		case notSelected
@@ -22,7 +25,15 @@ struct RestrictionView: View
 						Button("Apps & Websites") {}
 						Toggle("All Day", isOn: $allDay)
 						NavigationLink("Link", destination: {
-							Text("Some other destination")
+							Text("Select Apps & Website to Restrict")
+							.font(.title)
+							.familyActivityPicker(
+								isPresented: $familyPickerPresented,
+								selection: $model.selection
+							)
+							.onAppear {
+								familyPickerPresented = true
+							}
 						})
 						Picker("Apps & Websites", selection: $state) {
 							ForEach(RestrictionState.allCases, id: \.self) {

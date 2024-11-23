@@ -11,7 +11,7 @@
 		284A8B2B2CF1FB850022BF7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 284A8B2A2CF1FB850022BF7C /* Assets.xcassets */; };
 		284A8B2E2CF1FB850022BF7C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 284A8B2D2CF1FB850022BF7C /* Preview Assets.xcassets */; };
 		284A8B352CF1FBA90022BF7C /* RestrictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284A8B342CF1FBA90022BF7C /* RestrictionView.swift */; };
-		284A8B372CF20ECF0022BF7C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284A8B362CF20ECF0022BF7C /* Model.swift */; };
+		284A8B372CF20ECF0022BF7C /* Restrictions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284A8B362CF20ECF0022BF7C /* Restrictions.swift */; };
 		284A8B3F2CF210520022BF7C /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284A8B3E2CF210520022BF7C /* DeviceActivity.framework */; };
 		284A8B422CF210530022BF7C /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284A8B412CF210530022BF7C /* DeviceActivityMonitorExtension.swift */; };
 		284A8B472CF210530022BF7C /* DeviceActivityMonitor.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 284A8B3C2CF210520022BF7C /* DeviceActivityMonitor.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -47,7 +47,7 @@
 		284A8B2A2CF1FB850022BF7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		284A8B2D2CF1FB850022BF7C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		284A8B342CF1FBA90022BF7C /* RestrictionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictionView.swift; sourceTree = "<group>"; };
-		284A8B362CF20ECF0022BF7C /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		284A8B362CF20ECF0022BF7C /* Restrictions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restrictions.swift; sourceTree = "<group>"; };
 		284A8B3C2CF210520022BF7C /* DeviceActivityMonitor.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DeviceActivityMonitor.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		284A8B3E2CF210520022BF7C /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
 		284A8B412CF210530022BF7C /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
@@ -100,7 +100,7 @@
 				284A8B4C2CF210730022BF7C /* ScreenTimeTest.entitlements */,
 				284A8B262CF1FB830022BF7C /* ScreenTimeTestApp.swift */,
 				284A8B342CF1FBA90022BF7C /* RestrictionView.swift */,
-				284A8B362CF20ECF0022BF7C /* Model.swift */,
+				284A8B362CF20ECF0022BF7C /* Restrictions.swift */,
 				284A8B2A2CF1FB850022BF7C /* Assets.xcassets */,
 				284A8B2C2CF1FB850022BF7C /* Preview Content */,
 			);
@@ -235,7 +235,7 @@
 			files = (
 				284A8B352CF1FBA90022BF7C /* RestrictionView.swift in Sources */,
 				284A8B272CF1FB830022BF7C /* ScreenTimeTestApp.swift in Sources */,
-				284A8B372CF20ECF0022BF7C /* Model.swift in Sources */,
+				284A8B372CF20ECF0022BF7C /* Restrictions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,7 +291,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -352,7 +352,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

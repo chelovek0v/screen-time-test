@@ -4,7 +4,7 @@ import SwiftUI
 
 struct RestrictionView: View
 {
-	@StateObject var model = Model()
+	@StateObject var model = Restrictions()
 	@State private var familyPickerPresented = false
 
 	enum RestrictionState: CaseIterable {
@@ -24,7 +24,7 @@ struct RestrictionView: View
 								HStack {
 									Text("Apps & Website")
 									Spacer()
-									if model.isEmpty {
+									if model.isSelectionEmpty {
 										Button(action: {}) {
 											Image(systemName: "info.circle.fill")
 											Text("Select")
@@ -34,9 +34,10 @@ struct RestrictionView: View
 										.controlSize(.small)
 										.tint(.yellow)
 										.foregroundColor(.primary)
+										.allowsHitTesting(false)
 									}
 									else {
-										Text("Blocked \(model.blocked)")
+										Text("Blocked \(model.numberOfSelectedItems)")
 									}
 								}
 							}
@@ -57,19 +58,19 @@ struct RestrictionView: View
 						Spacer()
 
 						Button("Deactivate") {
-							model.stopMonitoring()
+							model.deactivate()
 						}
-						.disabled(!model.active)
+						.disabled(!model.isActive)
 
 						Spacer()
 
 						Button("Activate") {
-							model.startMonitoring()
+							model.activate()
 						}
 						// TODO: add mode.active check
-						.disabled(model.isEmpty)
+						.disabled(model.isSelectionEmpty)
 						.buttonStyle(.borderedProminent)
-						.tint(model.saved ? .blue : .yellow)
+						.tint(model.hasChanges ? .yellow : .blue)
 					}
 				}
 			}

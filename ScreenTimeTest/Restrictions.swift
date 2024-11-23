@@ -6,24 +6,29 @@ import DeviceActivity
 import ManagedSettings
 
 
-final class Model: ObservableObject
+final class Restrictions: ObservableObject
 {
+	@Published
+	var hasChanges = false
+
 	@Published
 	var selection = FamilyActivitySelection() {
 		didSet {
-			saved = false
+			hasChanges = true
+			sharedUserDefaults.set(try? Self.encoder.encode(selection), forKey: "Selection")
 		}
 	}
 
-	var isEmpty: Bool {
+	var isSelectionEmpty: Bool {
 		selection.applicationTokens.isEmpty &&
 		selection.webDomainTokens.isEmpty
 	}
-	var blocked: Int {
+
+	var numberOfSelectedItems: Int {
 		selection.applicationTokens.count + selection.webDomainTokens.count
 	}
 
-	var active: Bool {
+	var isActive: Bool {
 		// TODO: create something more concrete, e.g Weekdays.
 		(1...7)
 			.map({ String(describing: $0) })
@@ -31,6 +36,7 @@ final class Model: ObservableObject
 					.isEmpty == false
 	}
 
+	// MARK: - Schedule
 	struct Schedule {
 		// TODO: there're better options, maybe an enum. But it's good enough, no optimisation beforehand.
 		// See EKEvent for example.
@@ -59,49 +65,46 @@ final class Model: ObservableObject
 	@Published
 	var schedule: Schedule = .init(allDay: false, starts: .now, ends: .init(timeIntervalSinceNow: 60 * 60), weekdays: []) {
 		didSet {
-			saved = false
+			hasChanges = true
 		}
 	}
 
-	@Published
-	var saved = true
-
+	// MARK: -
 	lazy var sharedUserDefaults = UserDefaults(suiteName: "group.6M9LRL268Y.me.vanka")!
 
-	lazy var center = DeviceActivityCenter()
-
-    private static let encoder = PropertyListEncoder()
-	func startMonitoring()
+	func activate()
 	{
-        sharedUserDefaults.set(try? Self.encoder.encode(selection), forKey: "Selection")
+		defer { hasChanges = false }
 
+		let center = DeviceActivityCenter()
 		center.stopMonitoring()
 
-		for (weekday, weekdaySchedule) in schedule.deviceActivitySchedules
+		for (weekdayCalendarIndex, weekdaySchedule) in schedule.deviceActivitySchedules
 		{
-			logger.debug("Weekday: \(weekday), starts: \(weekdaySchedule.intervalStart.hour!, privacy: .public)-\(weekdaySchedule.intervalStart.minute!, privacy: .public) ends: \(weekdaySchedule.intervalEnd.hour!, privacy: .public)-\(weekdaySchedule.intervalEnd.minute!, privacy: .public)")
+			logger.debug("Weekday: \(weekdayCalendarIndex), starts: \(weekdaySchedule.intervalStart.hour!, privacy: .public)-\(weekdaySchedule.intervalStart.minute!, privacy: .public) ends: \(weekdaySchedule.intervalEnd.hour!, privacy: .public)-\(weekdaySchedule.intervalEnd.minute!, privacy: .public)")
 
 			do {
-				logger.info("Starting monitor for \(weekday).")
+				logger.info("Starting monitor for \(weekdayCalendarIndex).")
 
-				try center.startMonitoring(DeviceActivityName(String(describing: weekday)), during: weekdaySchedule)
+				try center.startMonitoring(DeviceActivityName(String(describing: weekdayCalendarIndex)), during: weekdaySchedule)
 
-				logger.info("Monitoring installed successfuly for \(weekday).")
+				logger.info("Monitoring installed successfuly for \(weekdayCalendarIndex).")
 			}
 			catch let error {
-				logger.error("Monitoring failed for \(weekday), error: \(error.localizedDescription, privacy: .public)")
+				logger.error("Monitoring failed for \(weekdayCalendarIndex), error: \(error.localizedDescription, privacy: .public)")
 			}
 		}
-
-		saved = true
 	}
 
-	func stopMonitoring()
+	func deactivate()
 	{
+		let center = DeviceActivityCenter()
 		let settings = AllSettings(named: .default)
 		
 		settings.clearAllSettings()
 		center.stopMonitoring()
-		saved = true
+		hasChanges = false
 	}
+
+    private static let encoder = PropertyListEncoder()
 }

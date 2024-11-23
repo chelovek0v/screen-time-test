@@ -32,6 +32,10 @@ final class Model: ObservableObject
 	}
 
 	struct Schedule {
+		// TODO: there're better options, maybe an enum. But it's good enough, no optimisation beforehand.
+		// See EKEvent for example.
+		var allDay: Bool
+
 		var starts: Date
 		var ends: Date
 		var weekdays: Set<Int>
@@ -39,8 +43,8 @@ final class Model: ObservableObject
 		var deviceActivitySchedules: [(weekday: Int, schedule: DeviceActivitySchedule)] {
 			weekdays.map {
 				// TODO: extension would be nice here, just to hush the noise.
-				let startsComponents = Calendar.current.dateComponents([.hour, .minute], from: starts)
-				let endsComponents = Calendar.current.dateComponents([.hour, .minute], from: ends)
+				let startsComponents = allDay ? DateComponents(hour: 0, minute: 0) : Calendar.current.dateComponents([.hour, .minute], from: starts)
+				let endsComponents = allDay ? DateComponents(hour: 23, minute: 59) : Calendar.current.dateComponents([.hour, .minute], from: ends)
 
 				let schedule = DeviceActivitySchedule(
 					intervalStart: DateComponents(hour: startsComponents.hour!, minute: startsComponents.minute!, weekday: $0),
@@ -53,7 +57,7 @@ final class Model: ObservableObject
 	}
 
 	@Published
-	var schedule: Schedule = .init(starts: .now, ends: .init(timeIntervalSinceNow: 60 * 60), weekdays: []) {
+	var schedule: Schedule = .init(allDay: false, starts: .now, ends: .init(timeIntervalSinceNow: 60 * 60), weekdays: []) {
 		didSet {
 			saved = false
 		}
@@ -62,7 +66,7 @@ final class Model: ObservableObject
 	@Published
 	var saved = true
 
-	lazy var sharedUserDefaults = UserDefaults(suiteName: "group.me.vanka")!
+	lazy var sharedUserDefaults = UserDefaults(suiteName: "group.6M9LRL268Y.me.vanka")!
 
 	lazy var center = DeviceActivityCenter()
 

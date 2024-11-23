@@ -6,7 +6,6 @@ struct RestrictionView: View
 	@StateObject var model = Model()
 	@State private var familyPickerPresented = false
 
-	@State var allDay: Bool
 	enum RestrictionState: CaseIterable {
 		case notSelected
 		case active
@@ -18,7 +17,7 @@ struct RestrictionView: View
 			VStack {
 				Form {
 					Section {
-						Toggle("All Day", isOn: $allDay)
+						Toggle("All Day", isOn: $model.schedule.allDay)
 						NavigationLink("Selected Apps & Websites", destination: {
 							Text("Select Apps & Website to Restrict")
 							.font(.title)
@@ -40,7 +39,9 @@ struct RestrictionView: View
 						}
 						.pickerStyle(.navigationLink)
 						DatePicker("Starts", selection: $model.schedule.starts, displayedComponents: .hourAndMinute)
+						.disabled(model.schedule.allDay)
 						DatePicker("Ends", selection: $model.schedule.ends, displayedComponents: .hourAndMinute)
+						.disabled(model.schedule.allDay)
 					}
 					footer: {
 						DaysOfWeekView(selected: $model.schedule.weekdays)
@@ -50,11 +51,14 @@ struct RestrictionView: View
 				.toolbar {
 					ToolbarItemGroup(placement: .bottomBar) {
 						Spacer()
+
 						Button("Deactivate") {
-							print("Pressed")
+							model.stopMonitoring()
 						}
 						.disabled(!model.active)
+
 						Spacer()
+
 						Button("Activate") {
 							model.startMonitoring()
 						}
@@ -73,7 +77,7 @@ struct RestrictionView: View
 struct RestrictionViewPreviews: PreviewProvider
 {
 	static var previews: some View {
-		RestrictionView(allDay: false)
+		RestrictionView()
 	}
 }
 

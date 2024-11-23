@@ -9,7 +9,7 @@ let logger = Logger(subsystem: "me.vanka.ScreenTimeTest", category: "Application
 struct ScreenTimeTestApp: App {
     var body: some Scene {
         WindowGroup {
-            RestrictionView(allDay: false)
+            RestrictionView()
 				.task {
 					do{
 						logger.info("Requesting Authorisation.")
